@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" style="position: unset!important;">
+<head>
+  <title>Duchy tiles</title>
+  <script>document.write('<base href="' + document.location + '" />');</script>
+  <meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover, maximum-scale=1, user-scalable=0">
+  <meta name="theme-color" content="#0c71b9">
+</head>
+<body class="notranslate">
+  <div>
+	<object id="svg" data="/Plot.svg" type="image/svg+xml" onload="load()" style="position: absolute"></object>
+	<object id="nam" data="/Name.svg" type="image/svg+xml" onload="load()" style="position: absolute; pointer-events: none"></object>
+	<br/>
+	<table style="font-size: 80px; width: 800px">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>State</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="data-id"></td>
+				<td id="data-state"></td>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+
+  <script type="text/javascript">
+    let svg, data, dataId = document.getElementById('data-id'), dataState = document.getElementById('data-state');
+
+    function serializePointsList(pl) {
+		let s = '';
+		for(let i = 0; i < pl.length; i++) {
+			s += pl[i].x + ' ' + pl[i].y + ' ';
+		}
+		return s.trim();
+	}
+	function deserializePointsList(pl, str) {
+		pl.clear();
+		const s = str.split(' ').map(parseFloat)
+		for(let i = 0; i < s.length / 2; i++) {
+			let svgpoint = svg.createSVGPoint();
+			svgpoint.y = s[2*i + 1];
+			svgpoint.x = s[2*i];
+			pl.appendItem(svgpoint);
+		}
+	}
+
+    function load() {
+		svg = document.getElementById('svg').contentDocument.firstChild;
+		
+		// Add classes
+		const style = svg.getElementsByTagName('style')[0];
+		style.innerHTML = '.cls-1 {fill: #3cc;} .cls-2 {fill: #c97;} .cls-3 {fill: #333;} .cls-4 {fill: #fff;}';
+		
+		// Hover effect
+		for(let i = 0; i < svg.childNodes.length; i++) {
+			svg.childNodes[i].addEventListener('mouseenter', () => {
+				const initialPoints = serializePointsList(svg.childNodes[i].points);
+				svg.childNodes[i].initialPoints = initialPoints;
+				let newPoints = initialPoints.split(' ').map(parseFloat);
+				const centerX = (newPoints[0] + newPoints[2] + newPoints[4] + newPoints[6] + newPoints[8] + newPoints[10]) / 6;
+				const centerY = (newPoints[1] + newPoints[3] + newPoints[5] + newPoints[7] + newPoints[9] + newPoints[11]) / 6;
+				newPoints = newPoints.map((p, i) => {
+					const deltaCenter = i%2 === 0? centerX - p : centerY - p;
+					return p - deltaCenter;
+				});
+				deserializePointsList(svg.childNodes[i].points, newPoints.join(' '));
+
+				const id = svg.childNodes[i].id;
+				dataId.innerHTML = id;
+				dataState.innerHTML = (data.find(d => d._id === id) || {state: 'Available'}).state;
+			});
+			svg.childNodes[i].addEventListener('mouseleave', () => {
+				deserializePointsList(svg.childNodes[i].points, svg.childNodes[i].initialPoints);
+
+				dataId.innerHTML = '';
+				dataState.innerHTML = '';
+			});
+		}
+		
+		// Fetch status
+		fetch('https://ww10fdwsme.execute-api.eu-central-1.amazonaws.com/prod/tiles').then(d => d.json()).then(d => {
+			data = d;
+			d.forEach(t => {
+				svg.getElementById(t._id).className.baseVal = (t.state === 'Booked' ? 'cls-2'
+					: (t.state === 'Available' ? 'cls-1' : (t.state === 'Unavailable' ? 'cls-3' : 'cls-4')));
+			});
+		});
+	}
+  </script>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+</html>
