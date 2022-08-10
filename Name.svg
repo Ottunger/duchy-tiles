@@ -1,0 +1,34 @@
+<svg id="Layer_4" data-name="Layer 4" xmlns="http://www.w3.org/2000/svg" width="1251.45mm" height="1273.86mm" viewBox="0 0 3547.41 3610.95">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 34px;
+        font-family: Poppins-Bold, Poppins;
+        font-weight: 700;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #000;
+        stroke-miterlimit: 10;
+        opacity: 0;
+      }
+    </style>
+  </defs>
+  <text class="cls-1" transform="translate(1655.44 2856.75)">Luxembourg</text>
+  <text class="cls-1" transform="translate(1468.86 3318.22)">Bettembourg</text>
+  <text class="cls-1" transform="translate(557.06 3134.58)">Petange</text>
+  <text class="cls-1" transform="translate(594.23 3299.25)">Differdange</text>
+  <text class="cls-1" transform="translate(1373.65 3494.6)">Dudelange</text>
+  <text class="cls-1" transform="translate(2826.8 2522.46)">Grevenmacher</text>
+  <text class="cls-1" transform="translate(2664.3 3181.97)">Remich</text>
+  <text class="cls-1" transform="translate(2955.45 1905.69)">Echternach</text>
+  <text class="cls-1" transform="translate(1845.3 1622.99)">Diekirch</text>
+  <text class="cls-1" transform="translate(1964.96 1323.03)">Vianden</text>
+  <text class="cls-1" transform="translate(1214.4 698.32)">Clervaux</text>
+  <text class="cls-1" transform="translate(806.59 1138.26)">Wiltz</text>
+  <text class="cls-1" transform="translate(1496.16 1716.93)">Ettelbruck</text>
+  <text class="cls-1" transform="translate(956 3341.59)">Esch-sur-Alzette</text>
+  <text class="cls-1" transform="translate(1094.29 376.5)">Troisvierges</text>
+  <rect id="to_delete" class="cls-2" x="0.5" y="0.5" width="3546.41" height="3609.95"/>
+</svg>
